@@ -73,6 +73,7 @@ const AddMeal = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Ajouter</Text>
       {/* Barre de recherche */}
       <TextInput
         value={searchTerm}
@@ -183,6 +184,12 @@ const styles = StyleSheet.create({
   selectedFood: {
     fontSize: 16,
     color: "#7f8c8d",
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#2c3e50",
+    marginBottom: 20,
   },
 });
 
