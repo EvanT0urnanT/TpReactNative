@@ -6,18 +6,9 @@ import { StyleSheet } from 'react-native';
 const NavBar = () => {
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarStyle: styles.tabBar }}>
+
       <Tabs.Screen
-        name="../(main)/index"
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          ),
-          tabBarLabelStyle: styles.tabBarLabel,
-        }}
-      />
-      <Tabs.Screen
-        name="../(main)/add/add.tsx"
+        name="add"
         options={{
           tabBarLabel: "Ajouter",
           tabBarIcon: ({ color, size }) => (
@@ -27,7 +18,17 @@ const NavBar = () => {
         }}
       />
       <Tabs.Screen
-        name="../(main)/profile"
+        name="index"
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
+          tabBarLabelStyle: styles.tabBarLabel,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
         options={{
           tabBarLabel: "Profil",
           tabBarIcon: ({ color, size }) => (

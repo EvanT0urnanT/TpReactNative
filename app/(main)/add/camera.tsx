@@ -4,15 +4,12 @@ import { Pressable, StyleSheet, Text, View, Alert, ActivityIndicator } from "rea
 import { useRouter } from "expo-router";
 import axios from "axios";
 
-const EDAMAM_APP_ID = "e9bc4e17";
-const EDAMAM_APP_KEY = "8feab6f5af75cf512316a5ca096b8e4b";
 
 export default function CameraScanner() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (permission && !permission.granted && permission.canAskAgain) {
@@ -27,8 +24,8 @@ export default function CameraScanner() {
         `https://api.edamam.com/api/food-database/v2/parser`,
         {
           params: {
-            app_id: EDAMAM_APP_ID,
-            app_key: EDAMAM_APP_KEY,
+            app_id: process.env.EXPO_PUBLIC_EDAMAM_APP_ID,
+            app_key: process.env.EXPO_PUBLIC_EDAMAM_KEY,
             upc: barcode,
           },
         }

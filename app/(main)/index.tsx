@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import { useMealContext } from "../context/MealContext"; // Import du contexte des repas
-import { View, Text, FlatList, Button, TouchableOpacity, StyleSheet } from "react-native";
+import { useMealContext } from "../context/MealContext";
+import { View, Text, FlatList,TouchableOpacity, StyleSheet } from "react-native";
 
 export default function MealListPage() {
   const router = useRouter();

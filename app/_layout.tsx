@@ -1,8 +1,6 @@
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "../libs/cache";
-import { Slot, Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import NavBar from "../components/NavBar";
+import { Slot } from "expo-router";
 import { MealProvider } from "./context/MealContext";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;

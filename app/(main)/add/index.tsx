@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextInput, Button, FlatList, View, Text, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Camera, useCameraPermissions } from "expo-camera";
+import { useCameraPermissions } from "expo-camera";
 import { useMealContext } from '../../context/MealContext';
 import uuid from 'react-native-uuid';
 
@@ -57,8 +57,8 @@ const AddMeal = () => {
 
     const newMeal = {
       id: uuid.v4(),
-      name:  'Repas du jour',
-      ingredients:  selectedFoods,
+      name: 'Repas du jour',
+      ingredients: selectedFoods,
       kcal: kcalFood,
     }
 
@@ -112,7 +112,9 @@ const AddMeal = () => {
       )}
 
       {/* Validation */}
-      <Button title="Valider le repas" onPress={validateMeal} color="#e74c3c" />
+      <TouchableOpacity style={styles.validateButton} onPress={scanQRCode}>
+        <Ionicons name="checkmark" size={32} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -148,16 +150,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#2c3e50",
   },
-  scanButton: {
-    backgroundColor: "#3498db",
-    padding: 15,
-    borderRadius: 50,
-    position: "absolute",
-    bottom: 30,
-    right: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    scanButton: {
+      backgroundColor: "#3498db",
+      padding: 15,
+      borderRadius: 50,
+      position: "absolute",
+      bottom: 30,
+      left: 30,  // Positionné à gauche
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  
+    validateButton: {
+      backgroundColor: "#27ae60",
+      padding: 15,
+      borderRadius: 50,
+      position: "absolute",
+      bottom: 30,
+      right: 30, // Positionné à droite
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  
   selectedFoodsContainer: {
     marginTop: 20,
   },
