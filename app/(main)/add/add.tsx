@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { TextInput, Button, FlatList, View, Text, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TextInput, Button, FlatList, View, Text, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Camera, CameraView, useCameraPermissions } from "expo-camera";
-import { useEffect } from 'react';
+import { Camera, useCameraPermissions } from "expo-camera";
 import { useMealContext } from '../../context/MealContext';
 import uuid from 'react-native-uuid';
-
 
 const EdamamAPI = 'https://api.edamam.com/api/food-database/v2/parser';
 
@@ -17,7 +15,6 @@ const AddMeal = () => {
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
   const { addMeal } = useMealContext();
-
 
   useEffect(() => {
     if (permission && !permission.granted && permission.canAskAgain) {
@@ -33,9 +30,7 @@ const AddMeal = () => {
         `${EdamamAPI}?app_id=${process.env.EXPO_PUBLIC_EDAMAM_APP_ID}&app_key=${process.env.EXPO_PUBLIC_EDAMAM_KEY}&ingr=${searchTerm}`
       );
       const data = await response.json();
-
       setFoodResults(data.hints);
-      
     } catch (error) {
       Alert.alert('Erreur', 'Impossible de récupérer les aliments');
     }
@@ -49,12 +44,12 @@ const AddMeal = () => {
     router.push('/(main)/add/camera');
   };
 
-  // Valider le repas
   const validateMeal = () => {
     if (selectedFoods.length === 0) {
       Alert.alert('Erreur', 'Veuillez sélectionner des aliments');
       return;
     }
+
     var kcalFood = 0;
     selectedFoods.forEach(food => {
       kcalFood += food.food.nutrients.ENERC_KCAL;
@@ -67,8 +62,6 @@ const AddMeal = () => {
       kcal: kcalFood,
     }
 
-
-
     addMeal(newMeal);
 
     Alert.alert('Succès', 'Repas ajouté avec succès');
@@ -79,53 +72,104 @@ const AddMeal = () => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={styles.container}>
       {/* Barre de recherche */}
       <TextInput
         value={searchTerm}
         onChangeText={setSearchTerm}
         placeholder="Rechercher un aliment"
-        style={{
-          height: 40,
-          borderColor: '#ccc',
-          borderWidth: 1,
-          paddingLeft: 10,
-          marginBottom: 10,
-        }}
+        style={styles.searchInput}
       />
-      <Button title="Rechercher" onPress={searchFood} />
+      <Button title="Rechercher" onPress={searchFood} color="#3498db" />
 
       {/* Liste des résultats */}
       <FlatList
         data={foodResults}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-            <Text>{item.food.label}</Text>
-            <Button title="Sélectionner" onPress={() => selectFood(item)} />
+          <View style={styles.foodItem}>
+            <Text style={styles.foodName}>{item.food.label}</Text>
+            <Button title="Sélectionner" onPress={() => selectFood(item)} color="#2ecc71" />
           </View>
         )}
       />
 
       {/* QR Code Scanner */}
-      <Button title="Scanner un QR Code" onPress={scanQRCode} />
+      <TouchableOpacity style={styles.scanButton} onPress={scanQRCode}>
+        <Ionicons name="scan" size={32} color="#fff" />
+      </TouchableOpacity>
 
       {/* Aliments sélectionnés */}
       {selectedFoods.length > 0 && (
-        <View style={{ marginTop: 20 }}>
-          <Text>Aliments sélectionnés :</Text>
+        <View style={styles.selectedFoodsContainer}>
+          <Text style={styles.selectedFoodsTitle}>Aliments sélectionnés :</Text>
           <FlatList
             data={selectedFoods}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => <Text>{item.food.label}</Text>}
+            renderItem={({ item }) => <Text style={styles.selectedFood}>{item.food.label}</Text>}
           />
         </View>
       )}
 
       {/* Validation */}
-      <Button title="Valider le repas" onPress={validateMeal} />
+      <Button title="Valider le repas" onPress={validateMeal} color="#e74c3c" />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#f9f9f9",
+  },
+  searchInput: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+  },
+  foodItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+  },
+  foodName: {
+    fontSize: 16,
+    color: "#2c3e50",
+  },
+  scanButton: {
+    backgroundColor: "#3498db",
+    padding: 15,
+    borderRadius: 50,
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectedFoodsContainer: {
+    marginTop: 20,
+  },
+  selectedFoodsTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#2c3e50",
+  },
+  selectedFood: {
+    fontSize: 16,
+    color: "#7f8c8d",
+  },
+});
 
 export default AddMeal;

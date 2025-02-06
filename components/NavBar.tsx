@@ -1,10 +1,11 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { StyleSheet } from 'react-native';
 
 const NavBar = () => {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs screenOptions={{ headerShown: false, tabBarStyle: styles.tabBar }}>
       <Tabs.Screen
         name="../(main)/index"
         options={{
@@ -12,6 +13,7 @@ const NavBar = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),
+          tabBarLabelStyle: styles.tabBarLabel,
         }}
       />
       <Tabs.Screen
@@ -21,6 +23,7 @@ const NavBar = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" color={color} size={size} />
           ),
+          tabBarLabelStyle: styles.tabBarLabel,
         }}
       />
       <Tabs.Screen
@@ -30,6 +33,7 @@ const NavBar = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
           ),
+          tabBarLabelStyle: styles.tabBarLabel,
         }}
       />
       <Tabs.Screen
@@ -41,5 +45,20 @@ const NavBar = () => {
     </Tabs>
   );
 };
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: '#ffffff', // Fond clair pour la barre de navigation
+    borderTopWidth: 1,
+    borderTopColor: '#e2e2e2', // Bordure subtile
+    elevation: 5, // Ombre douce pour l'effet de profondeur
+    paddingBottom: 5, // Espacement en bas
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#7f8c8d', // Couleur subtile mais visible pour les étiquettes
+  },
+});
 
 export default NavBar;
